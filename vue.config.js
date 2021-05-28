@@ -1,11 +1,11 @@
-const path = require('path');
-const {name} = require('./package');
+const path = require('path')
+const { name } = require('./package')
 
-function resolve(dir) {
-  return path.join(__dirname, dir);
+function resolve (dir) {
+  return path.join(__dirname, dir)
 }
 
-const port = 7101; // dev port
+const port = 7101 // dev port
 
 module.exports = {
   /**
@@ -15,15 +15,33 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  outputDir: 'dist',
+  outputDir: 'seeplnApiChild',
   assetsDir: 'static',
+  publicPath: './',
   filenameHashing: true,
+  css: {
+    loaderOptions: {
+      less: {
+        lessOptions: {
+          // If you are using less-loader@5 please spread the lessOptions to options directly
+          modifyVars: {
+            'primary-color': '#1DA57A',
+            'link-color': '#1DA57A',
+            'border-radius-base': '2px',
+          },
+          javascriptEnabled: true,
+        },
+      },
+    },
+  },
   // tweak internal webpack configuration.
   // see https://github.com/vuejs/vue-cli/blob/dev/docs/webpack.md
   devServer: {
-    host: '127.0.0.1',
+    // host: '47.100.11.154',
+    host:'127.0.0.1',
     hot: true,
     disableHostCheck: true,
+    historyApiFallback: true,
     port,
     overlay: {
       warnings: false,
@@ -47,4 +65,4 @@ module.exports = {
       jsonpFunction: `webpackJsonp_${name}`,
     },
   },
-};
+}

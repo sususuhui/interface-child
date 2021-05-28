@@ -1,26 +1,26 @@
 import './public-path'
-import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
 import Vue from 'vue'
-import VueRouter from 'vue-router'
 import App from './App.vue'
-import routes from './router'
+import router from './router'
 import store from './store'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import 'ant-design-vue/dist/antd.less'
+import Antd from 'ant-design-vue/es'
 
 Vue.config.productionTip = false
+Vue.use(ElementUI)
 Vue.use(Antd)
-
-let router = null
 let instance = null
 
 function render (props = {}) {
-  const { container, basePath } = props
-  router = new VueRouter({
-    base: window.__POWERED_BY_QIANKUN__ ? basePath : '/',
-    mode: 'history',
-    routes
+  const {
+    container,
+  } = props
+  store.commit('setFunction', {
+    fun: props.openOrChangeTags,
+    name: 'openOrChangeTags'
   })
-  store.commit('setParamData', props.params)
   instance = new Vue({
     router,
     store,
@@ -44,15 +44,15 @@ if (!window.__POWERED_BY_QIANKUN__) {
 //   props.setGlobalState(props)
 // }
 
-export async function bootstrap () {
+export async function bootstrap (props) {
   // console.log('[vue] vue app bootstraped');
 }
 
 export async function mount (props) {
-  console.log('[vue] props from main framework', props)
+  console.log(props)
   // 设置通讯
-  // Vue.prototype.$onGlobalStateChange = props.onGlobalStateChange
-  // Vue.prototype.$setGlobalState = props.setGlobalState
+  Vue.prototype.$onGlobalStateChange = props.actions.onGlobalStateChange
+  Vue.prototype.$setGlobalState = props.actions.setGlobalState
   // storeTest()
   render(props)
 }
@@ -61,5 +61,6 @@ export async function unmount () {
   instance.$destroy()
   instance.$el.innerHTML = ''
   instance = null
-  router = null
 }
+
+
